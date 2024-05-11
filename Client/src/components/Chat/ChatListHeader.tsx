@@ -89,7 +89,7 @@ const ChatListHeader = () => {
     <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
             <Tooltip title="Some very very long name" placement='bottom' arrow>
-                <Typography variant='h5' maxWidth="65%" noWrap >
+                <Typography variant='h5' maxWidth="65%"     color={theme.palette.text.secondary} noWrap >
                 Some very very long name
                 </Typography>
             </Tooltip>

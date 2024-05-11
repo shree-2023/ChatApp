@@ -34,3 +34,17 @@
 // };
 
 // export default ChatListItems;
+import React from 'react'
+import ChatListItem from './ChatListItem'
+
+const ChatListItems = () => {
+  return (
+    <>
+    <ChatListItem/>
+    <ChatListItem/>
+    
+    </>
+  )
+}
+
+export default ChatListItems

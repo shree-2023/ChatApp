@@ -117,11 +117,16 @@
 import { Add, GroupAdd } from "@mui/icons-material";
 import {IconButton,ListItem,ListItemButton,ListItemIcon, ListItemText,Popover,useTheme} from "@mui/material";
 import React, { useState } from "react";
+import StartConversationModal from "../Conversation/StartConversationModal";
 
 const ChatListHeading = () => {
   const theme = useTheme();
  const [addChatAnchorEl,setAddChatAnchorEl]= useState<HTMLElement | null>(null);
-   
+   const [openCreateConversationModal,setOpenCreateConversationModal]=
+   useState<{isOpen:Boolean,type:"DIRECT_MESSAGE"|"GROUP"}>({
+    isOpen:false,
+    type:"DIRECT_MESSAGE",
+   });
   return (
 <>
       <ListItem>
@@ -159,23 +164,41 @@ const ChatListHeading = () => {
           anchorEl={addChatAnchorEl}
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
             <ListItem disablePadding>
-                <ListItemButton>
-                    <ListItemIcon>
+                <ListItemButton onClick={()=>{
+                    setOpenCreateConversationModal({
+                        isOpen:true,
+                        type:"DIRECT_MESSAGE",
+                    });
+                }}>  
+                    <ListItemIcon >
                         <Add/>
                     </ListItemIcon>
                     <ListItemText primaryTypographyProps={{color:theme.palette.text.secondary}}>New Chat</ListItemText>
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton onClick={()=>{
+                    setOpenCreateConversationModal({
+                        isOpen:true,
+                        type:"GROUP",
+                    });
+                }}>
                     <ListItemIcon>
                         <GroupAdd/>
                     </ListItemIcon>
                     <ListItemText  primaryTypographyProps={{color:theme.palette.text.secondary}}>New Group </ListItemText>
                 </ListItemButton>
             </ListItem>
+
 </Popover>
       )}
+      {openCreateConversationModal && (<StartConversationModal open={openCreateConversationModal?.isOpen} onClose={()=>{
+        setOpenCreateConversationModal({
+            isOpen:false,
+            type:"DIRECT_MESSAGE",
+        });
+      }} type={openCreateConversationModal?.type}
+      />)}
       </>
       );
       };
