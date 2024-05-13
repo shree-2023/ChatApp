@@ -23,17 +23,22 @@ const Signup = () => {
               Sign Up
             </Typography>
             <CustomTextField
-            value={signupData?.fullName}
-              label="Full Name"
-              required
-              type="text"
-              size="small"
-              placeholder="Enter your Full Name"
-              onChange={function (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
-                handleSignupDataChange({ key: "Name", value: event.target.value });
-              }
-              }
-            />
+          label="Full Name"
+          required
+          value={signupData?.fullName}
+          size="small"
+          placeholder="Full Name"
+          name="fullName"
+          type="text"
+          onChange={(
+            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          ) => {
+            handleSignupDataChange({
+              key: "fullName",
+              value: event.target.value,
+            });
+          }}
+        />
             <CustomTextField
              value={signupData?.email}
               label="Email"
@@ -52,7 +57,7 @@ const Signup = () => {
           value={signupData?.password}
           size="small"
           placeholder="Enter your password"
-          name="password"
+      
           type={signupData?.showP ? "text" : "password"}
           onChange={(
             event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

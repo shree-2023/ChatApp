@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { userSignup } from "../api/authApiHandler";
+import { userLogin, userSignup } from "../api/authApiHandler";
 import { useAuthContext } from "../contexts/AuthContext";
 import { SignupData } from "../utils/types";
 
@@ -11,13 +11,14 @@ import { SignupData } from "../utils/types";
 export default function useAuth() {
   const navigate = useNavigate();
   //eslint-disable-next-line
-  const [cookies, _, removeCookie] = useCookies(["token"]);
+  const [_cookies, _, removeCookie] = useCookies(["token"]);
   const [loading, setLoading] = useState<"login" | "signup" | null>(null);
   const { setLoggedInUser } = useAuthContext();
   const [tabValue, setTabValue] = useState<number>(0);
-  function handleTabChange(event: React.SyntheticEvent, newValue: number) {
-    setTabValue(newValue);
-  }
+  // function handleTabChange(event: React.SyntheticEvent, newValue: number) {
+  //   setTabValue(newValue);
+  // }
+
   const [signupData, setSignupData] = useState<SignupData>({
     email: "",
     fullName: "",
@@ -54,7 +55,11 @@ export default function useAuth() {
   }) {
     setLoginData((prev) => ({ ...prev, [key]: value }));
   }
+    
+    function handleTabChange(event:React.SyntheticEvent,newValue:number){
+    setTabValue(newValue);
 
+    }
   async function handleSignup() {
     setLoading("signup");
     try {

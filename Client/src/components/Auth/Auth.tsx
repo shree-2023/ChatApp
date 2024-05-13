@@ -2,6 +2,7 @@ import { Grid, Paper, Tab, Tabs } from "@mui/material"
 import React, { useState } from "react"
 import Login from "./Login";
 import Signup from "./Signup";
+import useAuth from "../../hooks/useAuth";
 interface CustomTabPanelProps{
     children?:React.ReactNode;
     index:number;
@@ -14,11 +15,12 @@ function CustomTabPanel(props:CustomTabPanelProps){
     return value===index && children;
 }
 const Auth = () => {
-    const [tabValue,setTabValue]=useState<number>(0)
-    function handleTabChange(event:React.SyntheticEvent,newValue:number){
-    setTabValue(newValue);
+    // const [tabValue,setTabValue]=useState<number>(0)
+    // function handleTabChange(event:React.SyntheticEvent,newValue:number){
+    // setTabValue(newValue);
 
-    }
+    // }
+    const {tabValue,handleTabChange}=useAuth();
   return (
     <Grid container width="100%" height="100vh" justifyContent="center" alignItems="center">
         <Grid  item display="flex" flexDirection="column" gap={2} height="500px">

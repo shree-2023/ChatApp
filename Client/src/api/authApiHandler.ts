@@ -9,7 +9,7 @@ export const userSignup = async (signupData: SignupData) => {
     method: "POST",
     data: {
       email: signupData?.email,
-      name: signupData?.Name,
+      name: signupData?.fullName,
       password: signupData?.password,
       imageUrl: signupData?.imageUrl,
     },

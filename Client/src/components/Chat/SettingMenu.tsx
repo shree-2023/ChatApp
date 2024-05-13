@@ -78,12 +78,15 @@ import { SettingsMenuProps } from '../../utils/types'
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, Popover, useTheme } from '@mui/material'
 import { Contrast, DarkMode, Logout } from '@mui/icons-material'
 import { useThemeContext } from '../../contexts/ThemeContextProvider';
+import useAuth from '../../hooks/useAuth';
+
 
 const SettingMenu = ({
     settingsAnchorEl,setSettingsAnchorEl
 }:SettingsMenuProps) => {
     const theme=useTheme();
-    const {mode,handleSetTheme}=useThemeContext()
+    const {mode,handleSetTheme}=useThemeContext();
+    const {logout}=useAuth();
     if(settingsAnchorEl){
   return (
   <Popover open={Boolean(settingsAnchorEl)} onClose={()=>{
@@ -103,7 +106,7 @@ const SettingMenu = ({
         </ListItemButton>
     </ListItem>
     <ListItem>
-        <ListItemButton onClick={()=>{ }}>
+        <ListItemButton onClick={()=>{ logout();}}>
             <ListItemIcon>
                 <Logout/>
             </ListItemIcon>

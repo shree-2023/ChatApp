@@ -1,14 +1,14 @@
 
 import { Grid, IconButton, Paper, Typography, useTheme } from "@mui/material";
 import React from "react";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CustomTextField from "../../Custom/CustomTextField";
 import CustomButton from "../../Custom/CustomButton";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const theme = useTheme();
-//   const { loginData, handleLoginDataChange, handleLogin, loading } = useAuth();
+  const { loginData, handleLoginDataChange, handleLogin, loading } = useAuth();
 
   return (
     <Grid container justifyContent="center" alignItems="center">
@@ -30,15 +30,44 @@ const Login = () => {
           type="email"
           size="small"
           placeholder="Enter your email"
+          value={loginData?.email}
+          onChange={function (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+            handleLoginDataChange({ key: "email", value: event.target.value });
+          }
+          }
         />
           <CustomTextField
           label="Password"
           required
           size="small"
-          type="password"
+          value={loginData?.password}
+          type={ loginData?.showP? "text":"password"}
+          onChange={function (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+            handleLoginDataChange({ key: "password", value: event.target.value });
+          }
+          }
           placeholder="Enter your password"
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                onClick={() => {
+                  handleLoginDataChange({
+                    key: "showP",
+                    value: !loginData?.showP,
+                  });
+                }}
+              >
+                {loginData?.showP ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            ),
+          }}
+
         />
-        <CustomButton >Sign In</CustomButton>
+        <CustomButton loading={loading==='login'} disabled={loading==='login' } variant="contained"
+        onClick={()=>{
+          handleLogin();
+        }}
+        >Sign In</CustomButton>
         {/* <CustomTextField
           label="Password"
           required

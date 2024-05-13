@@ -20,6 +20,8 @@ export const signup=async(req:Request,res:Response)=>{
         if(existingUser){
             return res.json({message:"Email is already in use"});
         }
+        
+    
         if(!existingUser){
             const hashedPassword=await bcrypt.hash(password,10);
             const newUser=await prisma.user.create({
@@ -45,7 +47,7 @@ export const signup=async(req:Request,res:Response)=>{
 
 
 export const login=async(req:Request,res:Response)=>{
-    const { email, password, name, imageUrl = null } = req?.body;
+    const { email, password} = req?.body;
  if(!email){
     res.json({message:"Email is Required"})
 }

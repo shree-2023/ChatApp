@@ -118,15 +118,11 @@ import { Add, GroupAdd } from "@mui/icons-material";
 import {IconButton,ListItem,ListItemButton,ListItemIcon, ListItemText,Popover,useTheme} from "@mui/material";
 import React, { useState } from "react";
 import StartConversationModal from "../Conversation/StartConversationModal";
+import { useConversationContex } from "../../contexts/ConversationContext";
 
 const ChatListHeading = () => {
   const theme = useTheme();
- const [addChatAnchorEl,setAddChatAnchorEl]= useState<HTMLElement | null>(null);
-   const [openCreateConversationModal,setOpenCreateConversationModal]=
-   useState<{isOpen:Boolean,type:"DIRECT_MESSAGE"|"GROUP"}>({
-    isOpen:false,
-    type:"DIRECT_MESSAGE",
-   });
+const {addChatAnchorEl,setAddChatAnchorEl,setOpenCreateConversationModal,openCreateConversationModal}=useConversationContex()!;
   return (
 <>
       <ListItem>
