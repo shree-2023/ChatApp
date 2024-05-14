@@ -54,7 +54,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
               },
             }
           );
-        //   navigate("/auth");
+          navigate("/auth");
         }
       } else {
         navigate("/auth");

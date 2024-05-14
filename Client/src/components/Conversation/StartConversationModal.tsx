@@ -2,12 +2,25 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, useTheme } fro
 import CustomButton from "../../Custom/CustomButton"
 import CustomTextField from "../../Custom/CustomTextField"
 import AddUserListItem from "../../shared/AddUserListItem"
+import { useConversationContex } from "../../contexts/ConversationContext"
+import NoDataAvailable from "../../shared/NoDataAvailable"
+import { StartConversationModalProps, User } from "../../utils/types"
 
 
-const StartConversationModal = ({open,onClose,type}) => { 
-    const theme=useTheme()
-  return (
-<Dialog open={open} onClose={onClose} maxWidth="lg">
+const StartConversationModal = ({open,onClose,type}:StartConversationModalProps) => { 
+    const theme=useTheme();
+    const {allUsers,searchUserValue,handleSearchUserChange,selectedUserForConversation,setSelectedUserForConversation,groupTitle,setGroupTitle}=useConversationContex();
+    const renderUsers=(usersList:User[])=>{
+      return usersList?.map((user:User)=><AddUserListItem key={user?.id} user={user} selectedUsers={selectedUserForConversation} setSelectedUsers={setSelectedUserForConversation} 
+      type={type}/>)
+    }
+    function handleClose() {
+      onClose();
+      setSelectedUserForConversation([]);
+      setGroupTitle("");
+    }
+      return (
+<Dialog open={open} onClose={handleClose} maxWidth="lg">
     <DialogTitle color={theme.palette.text.secondary}>Select user to start a conversation</DialogTitle>
     <DialogContent>
     <Grid
@@ -27,6 +40,11 @@ const StartConversationModal = ({open,onClose,type}) => {
             size="small"
             placeholder="Please enter a group title"
             variant="outlined"
+            value={groupTitle}
+            onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>)=>{
+              setGroupTitle(event.target.value)
+            }}
+
           />)}
           <Grid item
             display="flex"
@@ -34,13 +52,15 @@ const StartConversationModal = ({open,onClose,type}) => {
             gap={1}
             maxHeight="300px"
             sx={{ overflowY: "scroll" }}>
-                <AddUserListItem/>
+              {allUsers && Array.isArray(allUsers) && allUsers?.length> 0?renderUsers(allUsers):<NoDataAvailable message="No user found"/>}
             </Grid>
         </Grid>
     </DialogContent>
     <DialogActions>
-        <CustomButton variant="text">Close</CustomButton>
-        <CustomButton variant="contained" >Create</CustomButton>
+      <CustomButton sx={{color:theme.palette.primary.main}}
+      variant="text" onClick={handleClose}>Close</CustomButton>
+
+        <CustomButton disabled={type==='GROUP'? !groupTitle?.trim()?.length || !selectedUserForConversation?.length:!selectedUserForConversation?.length} variant="contained" >Create</CustomButton>
 
     </DialogActions>
 </Dialog>

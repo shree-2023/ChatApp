@@ -2,8 +2,9 @@ import { Grid, Toolbar } from "@mui/material";
 import CustomAppBar from "../../Custom/CustomAppBar";
 import MessageList from "../Message/MessageList";
 import SendMessageContainer from "../Message/SendMessageContainer";
+import { ConversationContainerProps } from "../../utils/types";
 
-const ConversationContainer = ({ drawerWidth }) => {
+const ConversationContainer = ({ drawerWidth }:ConversationContainerProps) => {
   
   return (
     <Grid

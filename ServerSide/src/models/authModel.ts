@@ -67,7 +67,7 @@ try{
         if (!isPasswordValid) {
           return res.json({ message: "Invalid password" });
         }
-        res.cookie("token", await generateToken(existingUser));
+        res.cookie("token", await generateToken(existingUser));y
         return res.json({
             message: "Logged in successfully",
             user: {

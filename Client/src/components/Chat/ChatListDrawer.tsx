@@ -4,8 +4,9 @@ import ChatListHeading from "./ChatListHeading";
 import SearchChatListItem from "./SearchChatListItem";
 import ChatListItem from "./ChatListItem";
 import ChatListItems from "./ChatListItems";
+import { ChatListDrawerProps } from "../../utils/types";
 const drawerWidth=320
-const ChatListDrawer = ({drawerWidth})=>{
+const ChatListDrawer = ({drawerWidth,conversations}:ChatListDrawerProps)=>{
 
 
 
@@ -32,7 +33,7 @@ const ChatListDrawer = ({drawerWidth})=>{
         <Divider/>
         <ChatListHeading/>
         <ChatListItem/>
-        <ChatListItems/>
+        <ChatListItems conversations={converversations}/>
         <Divider/>
        </List>
       </Drawer>

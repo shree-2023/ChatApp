@@ -1,8 +1,12 @@
 import { Children, useCallback, useContext, useEffect, useState ,createContext} from "react";
-import { ConversationContextType,ConversationType,User } from "../utils/types";
+import { Conversation, ConversationContextType,ConversationType,User } from "../utils/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { getAllUsers } from "../api/usersApiHandler";
-import { create } from "domain";
+import { useAuthContext } from "./AuthContext";
+import { createConversation, getConversation } from "../api/conversationApiHandler";
+import toast from "react-hot-toast";
+import { borderRadius, color } from "@mui/system";
+
 
 export const ConversationContext= createContext<ConversationContextType>({})
 
@@ -11,16 +15,21 @@ export default function ConversationContextProvider({
   }: {
     children: React.ReactNode;
   }){
+    const {loggedInUser}=useAuthContext();
     const [addChatAnchorEl,setAddChatAnchorEl]= useState<HTMLElement | null>(null);
     const [openCreateConversationModal,setOpenCreateConversationModal]=
-    useState<{isOpen:Boolean,type: ConversationType}>({
+    useState<{isOpen:Boolean,type:"DIRECT_MESSAGE"|"GROUP"}>({
      isOpen:false,
      type:"DIRECT_MESSAGE",
     });
 
   
-    const [allMessages,setAllUsers] = useState<User[]>([]);
+    const [allUsers,setAllUsers] = useState<User[]>([]);
     const[searchUserValue,setSearchUserValue]=useState<string>("");
+    const [selectedUserForConversation,setSelectedUserForConversation]=useState<User[]>(()=>loggedInUser?.isAuthenticated && loggedInUser?.user?[loggedInUser?.user]:[]);
+    const [groupTitle,setGroupTitle]=useState<string>("");
+const[searchConversationValue,setSearchConversationValue]=useState<string>("");
+    const [conversations,setConversations]=useState<Conversation[]>([]);
 
     const handleGetUsers = useCallback(async (searchUserValue?: string) => {
         const users = await getAllUsers(searchUserValue);
@@ -35,7 +44,45 @@ export default function ConversationContextProvider({
       ) {
         setSearchUserValue(event.target.value);
       }
+
+      const handleGetConversation = useCallback(
+        async (searchConversationValue?: string) => {
+          try {
+            const response = await getConversation(searchConversationValue);
+            setConversations(response);
+          } catch (error) {
+            console.log(error);
+            toast.error(
+              error?.toString() ??
+                "Failed to fetch conversations please try again ",
+              {
+                style: {
+                  borderRadius: "10px",
+                  background: "#333",
+                  color: "#fff",
+                },
+              }
+            );
+          }
+        },
+        []
+      );
+
       const debouncedSearchUser=useDebounce(handleGetUsers,500);
+      const debouncedSearchChat=useDebounce(handleGetConversation,500);
+
+      useEffect(()=>{
+        if
+        (loggedInUser && loggedInUser?.isAuthenticated && loggedInUser?.user?.id)
+{
+  if(searchConversationValue){
+    debouncedSearchChat(searchConversationValue)
+  }
+  else{
+    handleGetConversation()
+  }
+}      },[searchConversationValue,loggedInUser,handleGetConversation])
+
       useEffect(()=>{
         if(openCreateConversationModal?.isOpen){
             if(searchUserValue){
@@ -52,7 +99,10 @@ export default function ConversationContextProvider({
 
 <ConversationContext.Provider
 value={{
-    addChatAnchorEl,setAddChatAnchorEl,openCreateConversationModal,setOpenCreateConversationModal
+    addChatAnchorEl,setAddChatAnchorEl,openCreateConversationModal, setOpenCreateConversationModal,
+    selectedUserForConversation,setSelectedUserForConversation,handleSearchUserChange,allUsers,
+    groupTitle,setGroupTitle,
+    searchConversationValue,setSearchConversationValue,conversations
 }}
 >
 {children}

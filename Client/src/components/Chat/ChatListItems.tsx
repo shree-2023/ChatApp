@@ -36,15 +36,17 @@
 // export default ChatListItems;
 import React from 'react'
 import ChatListItem from './ChatListItem'
+import { Conversation } from '../../utils/types'
 
-const ChatListItems = () => {
-  return (
-    <>
-    <ChatListItem/>
-    <ChatListItem/>
-    
-    </>
-  )
+const ChatListItems = ({conversations}:{conversations:Conversation[]}) => {
+  if(
+    conversations && Array.isArray(conversations)&&
+    conversations?.length>0
+  ){
+    return conversations?.map((conversation)=>(
+      <ChatListItem conversation={conversation}/>
+    ))
+  }
 }
 
 export default ChatListItems

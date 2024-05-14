@@ -97,9 +97,17 @@
 
 // export default ChatListItem;
 import { Avatar, Grid, ListItem,ListItemButton,ListItemIcon,ListItemText,useTheme } from '@mui/material'
+import { ChatListItemProps, Member } from '../../utils/types'
+import { useAuthContext } from '../../contexts/AuthContext'
+import stringAvatar from '../../utils/stringAvatar';
 
-const ChatListItem = () => {
+const ChatListItem = ({conversation}:ChatListItemProps) => {
+    const {loggedInUser}=useAuthContext();
     const theme=useTheme()
+const currentMember=conversation?.members?.find((member:Member)=>member?.userId===loggedInUser?.user?.id)
+const conversationTitle=conversation?.type==='DIRECT_MESSAGE'? currentMember?.user?.name:conversation?.groupTitle;
+const conversationImageUrl=conversation?.type==='DIRECT_MESSAGE'? currentMember?.user?.imageUrl:"";
+
   return (
    <ListItem disablePadding sx={{bgcolor:theme.palette.divider,mt:1}}>
     <ListItemButton selected={true} sx={{"&.Mui-selected":{
@@ -108,11 +116,11 @@ const ChatListItem = () => {
     },
     }}>
         <ListItemIcon>
-            <Avatar/>
+            <Avatar src={conversationImageUrl ??""}{...(conversationTitle && !conversationImageUrl?.trim()?.length ? stringAvatar(conversationTitle):{})}/>
         </ListItemIcon>
         <Grid container flexDirection="column">
             <ListItemText primaryTypographyProps={{variant:'body1',color:theme.palette.text.primary}}>
-                chat title
+               {conversationTitle ?? ""}
             </ListItemText>
         </Grid>
     </ListItemButton>

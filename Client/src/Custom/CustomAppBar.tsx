@@ -2,7 +2,8 @@
 import { Close, Delete, MoreVert } from "@mui/icons-material";
 import { AppBar, Avatar, Grid, IconButton, MenuItem, Popover, Toolbar, Typography, useTheme } from "@mui/material"
 import { useState } from "react";
-const CustomAppBar = ({drawerWidth}) => {
+import { CustomAppBarProps } from "../utils/types";
+const CustomAppBar = ({drawerWidth}:CustomAppBarProps) => {
     const theme=useTheme();
     const [chatMenuAnchorEl,setChatMenuAnchorEl]=useState<HTMLElement|null>(null);
   return (
