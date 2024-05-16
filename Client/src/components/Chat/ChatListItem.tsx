@@ -100,13 +100,16 @@ import { Avatar, Grid, ListItem,ListItemButton,ListItemIcon,ListItemText,useThem
 import { ChatListItemProps, Member } from '../../utils/types'
 import { useAuthContext } from '../../contexts/AuthContext'
 import stringAvatar from '../../utils/stringAvatar';
+import { useNavigate } from 'react-router-dom';
 
 const ChatListItem = ({conversation}:ChatListItemProps) => {
     const {loggedInUser}=useAuthContext();
     const theme=useTheme()
-const currentMember=conversation?.members?.find((member:Member)=>member?.userId===loggedInUser?.user?.id)
-const conversationTitle=conversation?.type==='DIRECT_MESSAGE'? currentMember?.user?.name:conversation?.groupTitle;
-const conversationImageUrl=conversation?.type==='DIRECT_MESSAGE'? currentMember?.user?.imageUrl:"";
+    const navigate=useNavigate();
+const notCurrentMember=conversation?.members?.find((member:Member)=>member?.userId!==loggedInUser?.user?.id)
+
+const conversationTitle=conversation?.type==='DIRECT_MESSAGE'? notCurrentMember?.user?.name:conversation?.groupTitle;
+const conversationImageUrl=conversation?.type==='DIRECT_MESSAGE'? notCurrentMember?.user?.imageUrl:"";
 
   return (
    <ListItem disablePadding sx={{bgcolor:theme.palette.divider,mt:1}}>
@@ -114,7 +117,14 @@ const conversationImageUrl=conversation?.type==='DIRECT_MESSAGE'? currentMember?
         bgcolor:theme.palette.primary.main,
         color:theme.palette.common.white,
     },
-    }}>
+    }}
+    disableRipple
+    disableTouchRipple
+    focusRipple={false}
+    onClick={()=>{
+        navigate(`/chat/${conversation?.id}`,{state:conversation})
+    }}
+    >
         <ListItemIcon>
             <Avatar src={conversationImageUrl ??""}{...(conversationTitle && !conversationImageUrl?.trim()?.length ? stringAvatar(conversationTitle):{})}/>
         </ListItemIcon>

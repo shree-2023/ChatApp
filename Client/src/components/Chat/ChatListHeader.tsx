@@ -80,23 +80,30 @@ import { Grid, IconButton, Toolbar, Tooltip, Typography, useScrollTrigger,useThe
 import {Home, Settings} from "@mui/icons-material";
 import { useState } from 'react';
 import SettingMenu from './SettingMenu';
+import { useConversationContex } from '../../contexts/ConversationContext';
+import { useAuthContext } from '../../contexts/AuthContext';
 
 const ChatListHeader = () => {
     const theme=useTheme();
-
+    const {handleGoToHome}= useConversationContex();
+    const{loggedInUser}=useAuthContext();
     const [settingsAnchorEl,setSettingsAnchorEl]=useState<HTMLElement | null>(null);
   return (
     <Toolbar>
         <Grid container justifyContent="space-between" alignItems="center">
-            <Tooltip title="Some very very long name" placement='bottom' arrow>
+            <Tooltip title={loggedInUser?.user?.name??""} placement='bottom' arrow>
                 <Typography variant='h5' maxWidth="65%"     color={theme.palette.text.secondary} noWrap >
-                Some very very long name
-                </Typography>
+{loggedInUser?.user?.name??""}                </Typography>
             </Tooltip>
+
+            <Grid item display="flex" alignItems="center" gap={1}>
+
             <IconButton disableRipple
              sx={{bgcolor:theme.palette.primary.main,
                 color:theme.palette.common.white,
-            }}><Home/></IconButton>
+            }}
+            onClick={handleGoToHome}
+            ><Home/></IconButton>
              <IconButton disableRipple 
              sx={{bgcolor:theme.palette.primary.main,
                 color:theme.palette.common.white,
@@ -107,6 +114,7 @@ const ChatListHeader = () => {
             }>
                 <Settings/>
             </IconButton>
+            </Grid>
         </Grid>
         <SettingMenu
          settingsAnchorEl={settingsAnchorEl} setSettingsAnchorEl={setSettingsAnchorEl}/>

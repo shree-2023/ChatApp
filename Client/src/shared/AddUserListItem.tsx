@@ -33,7 +33,11 @@ const AddUserListItem = ({user,type,selectedUsers,setSelectedUsers}:AddUserListI
     {...(user?.imageUrl?null:{...stringAvatar(user?.name)})}
     />
    </ListItemIcon>
-   <ListItemText primaryTypographyProps={{ color:theme.palette.secondary, variant:"h6"}}>{user?.name}</ListItemText>
+   <ListItemText 
+   primaryTypographyProps={{
+    variant: "h6",
+    color: theme.palette.text.secondary,
+  }}>{user?.name}</ListItemText>
    <ListItemIcon 
      sx={{
       color: isCurrentUserSelected

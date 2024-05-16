@@ -42,9 +42,11 @@
 import { IconButton, ListItem,useTheme } from '@mui/material'
 import CustomTextField from '../../Custom/CustomTextField'
 import { Search } from '@mui/icons-material';
+import { useConversationContex } from '../../contexts/ConversationContext';
 
 const SearchChatListItem = () => {
     const theme = useTheme();
+    const {searchConversationValue,setSearchConversationValue}=useConversationContex();
   return (
     <ListItem>
        <CustomTextField 
@@ -52,6 +54,10 @@ const SearchChatListItem = () => {
        size='small'
        variant='outlined'
        fullWidth
+       value={searchConversationValue}
+       onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>)=>{
+        setSearchConversationValue(event.target.value);
+       }}
        InputProps={{
           endAdornment: (
             <IconButton

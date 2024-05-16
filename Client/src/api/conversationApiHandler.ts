@@ -22,11 +22,11 @@ export const getConversation = async (searchValue?: string) => {
   });
   return response?.data;
 };
-// export const deleteConversation = async (conversationId: string) => {
-//   const response = await authFetchHandler({
-//     endPoint: SERVER_ENDPOINTS.CONVERSATION.DELETE,
-//     method: "DELETE",
-//     data: { conversationId },
-//   });
-//   return response?.data;
-// };
+export const deleteConversation = async (conversationId: string) => {
+  const response = await authFetchHandler({
+    endPoint: SERVER_ENDPOINTS.CONVERSATION.DELETE,
+    method: "DELETE",
+    data: { conversationId },
+  });
+  return response?.data;
+};
